@@ -1930,7 +1930,7 @@ async function publicar() {
 
 function info() {
     // Función para mostrar información
-    window.open(resolveApiUrl('/ExplicacionTPF.pdf'), "_blank");
+    window.open('ExplicacionTPF.pdf', "_blank");
 }
 
 function docs() {
