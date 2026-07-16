@@ -1767,6 +1767,9 @@ function limpiar() {
     // Limpiar selección
     selectedId = null;
     document.querySelectorAll("table tbody tr").forEach(r => r.classList.remove('selected'));
+
+    // Si la tabla fue filtrada por una busqueda, restaurar todos los links del espacio seleccionado.
+    renderSelectedSpaceLinksInMainTable();
 }
 
 function escapeHtml(value) {
@@ -1937,18 +1940,56 @@ function docs() {
     renderOwnerSpacePanel();
 }
 
-function log() {
+async function log() {
     const token = getToken();
     if (!token) {
         alert('Debe iniciar sesion para ver el log.');
         return;
     }
 
-    const url = resolveApiUrl(`/api/log-view?token=${encodeURIComponent(token)}`);
-    const newWindow = window.open(url, '_blank');
+    const newWindow = window.open('', '_blank');
 
     if (!newWindow) {
         alert('El navegador bloqueo la apertura de la pestaña. Permita pop-ups para este sitio.');
+        return;
+    }
+
+    try {
+        newWindow.document.write('<p style="font-family: Arial, sans-serif; padding: 16px;">Cargando log...</p>');
+        const response = await fetch(resolveApiUrl('/api/log-view'), {
+            method: 'GET',
+            headers: getAuthHeaders()
+        });
+
+        const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+        const text = await response.text();
+
+        if (!response.ok) {
+            let message = `No se pudo abrir log (HTTP ${response.status})`;
+            try {
+                const parsed = JSON.parse(text);
+                message = parsed.message || parsed.error || message;
+            } catch (_err) {
+                // Mantener mensaje por defecto.
+            }
+
+            newWindow.document.open();
+            newWindow.document.write(`<pre style="font-family: monospace; white-space: pre-wrap; padding: 16px;">${message}</pre>`);
+            newWindow.document.close();
+            return;
+        }
+
+        newWindow.document.open();
+        if (contentType.includes('text/html')) {
+            newWindow.document.write(text);
+        } else {
+            newWindow.document.write(`<pre style="font-family: monospace; white-space: pre-wrap; padding: 16px;">${text}</pre>`);
+        }
+        newWindow.document.close();
+    } catch (error) {
+        newWindow.document.open();
+        newWindow.document.write(`<pre style="font-family: monospace; white-space: pre-wrap; padding: 16px;">Error conectando con el servidor: ${String(error && error.message || error)}</pre>`);
+        newWindow.document.close();
     }
 }
 
