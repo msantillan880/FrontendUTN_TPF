@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TPF Auth Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .auth-shell {
+        max-width: 1100px;
+        margin: 20px auto;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #c7d8ef;
+        padding: 18px;
+      }
+
+      .auth-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 12px;
+      }
+
+      .auth-card {
+        border: 1px solid #d6e2f3;
+        background: #f9fbff;
+        padding: 12px;
+      }
+
+      .auth-card h3 {
+        margin: 0 0 10px 0;
+        color: #124b87;
+      }
+
+      .auth-card label {
+        display: block;
+        font-size: 13px;
+        margin-bottom: 3px;
+      }
+
+      .auth-card input,
+      .auth-card textarea,
+      .auth-card select {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+        padding: 6px;
+      }
+
+      .auth-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .auth-actions button {
+        border: 1px solid #124b87;
+        background: #eaf2ff;
+        color: #124b87;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+
+      #output {
+        width: 100%;
+        min-height: 220px;
+        margin-top: 14px;
+        box-sizing: border-box;
+        background: #0f1720;
+        color: #d9f2ff;
+        font-family: monospace;
+        font-size: 12px;
+        padding: 10px;
+      }
+
+      .token-box {
+        word-break: break-all;
+        font-family: monospace;
+        font-size: 11px;
+        background: #f2f7ff;
+        border: 1px dashed #8db1dd;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-shell">
+      <h2>Demo de Autenticacion y Autorizacion</h2>
+      <p>
+        Esta pagina permite probar register, verify, login, forgot/reset
+        password y acciones con token.
+      </p>
+
+      <div class="auth-grid">
+        <section class="auth-card">
+          <h3>1. Registro</h3>
+          <label>Nombre</label>
+          <input id="regNombre" value="usuario_demo" />
+          <label>Email</label>
+          <input id="regEmail" placeholder="email@mail.com" />
+          <label>Password</label>
+          <input id="regPassword" value="12345678" type="password" />
+          <div class="auth-actions">
+            <button id="btnRegister">Registrar</button>
+            <button id="btnVerify">Verificar ultimo token</button>
+          </div>
+        </section>
+
+        <section class="auth-card">
+          <h3>2. Login</h3>
+          <label>Email</label>
+          <input id="loginEmail" placeholder="email@mail.com" />
+          <label>Password</label>
+          <input id="loginPassword" value="12345678" type="password" />
+          <div class="auth-actions">
+            <button id="btnLogin">Login</button>
+            <button id="btnMe">/auth/me</button>
+            <button id="btnClearToken">Limpiar token</button>
+          </div>
+          <p>Token actual:</p>
+          <div id="tokenView" class="token-box">(sin token)</div>
+        </section>
+
+        <section class="auth-card">
+          <h3>3. Recuperar password</h3>
+          <label>Email</label>
+          <input id="forgotEmail" placeholder="email@mail.com" />
+          <label>Nuevo password</label>
+          <input id="resetPassword" value="87654321" type="password" />
+          <div class="auth-actions">
+            <button id="btnForgot">Forgot</button>
+            <button id="btnReset">Reset con ultimo token</button>
+          </div>
+        </section>
+
+        <section class="auth-card">
+          <h3>4. Prueba de endpoint protegido</h3>
+          <label>Metodo</label>
+          <select id="secureMethod">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          <label>Endpoint</label>
+          <input id="secureEndpoint" value="/api/espacios" />
+          <label>Body JSON</label>
+          <textarea id="secureBody">
+{"denominacion":"MiEspacioWeb","tipoEspacio":"privado"}</textarea
+          >
+          <div class="auth-actions">
+            <button id="btnSecureCall">Ejecutar</button>
+          </div>
+        </section>
+      </div>
+
+      <textarea id="output" readonly></textarea>
+    </div>
+
+    <script src="auth-demo.js"></script>
+  </body>
+</html>

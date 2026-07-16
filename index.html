@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BookmarksUtn</title>
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">BookmarksUtn</div>
+
+      <div class="session-banner">
+        Usuario logueado:
+        <a href="#" id="loggedUserLink"></a>
+        <button type="button" class="session-logout-btn" id="btnLogout">
+          Cerrar sesion
+        </button>
+      </div>
+
+      <section class="auth-panel" id="authPanel">
+        <h4>Ingreso de usuario</h4>
+        <div class="auth-status-row">
+          <p class="auth-status" id="authStatusText"></p>
+          <div class="auth-register-top">
+            <a href="#" id="registerLink">Sos nuevo, registrate aqui</a>
+          </div>
+        </div>
+        <form id="loginForm" class="auth-form" autocomplete="on">
+          <div class="auth-field">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" name="loginEmail" required />
+          </div>
+          <div class="auth-field">
+            <label for="loginPassword">Password:</label>
+            <input
+              type="password"
+              id="loginPassword"
+              name="loginPassword"
+              required
+            />
+          </div>
+          <div class="auth-actions">
+            <div class="auth-actions-side">
+              <div class="auth-actions-main">
+                <button type="submit" id="btnLoginMain">Ingresar</button>
+                <button type="button" id="btnLoginCancel">Cancelar</button>
+              </div>
+              <div class="auth-links">
+                <a href="#" id="forgotPasswordLink">Recuperar contraseña</a>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form id="registerForm" class="forgot-form hidden" autocomplete="on">
+          <div class="auth-field">
+            <label for="registerNombreMain">Nombre:</label>
+            <input
+              type="text"
+              id="registerNombreMain"
+              name="registerNombreMain"
+              required
+            />
+          </div>
+          <div class="auth-field">
+            <label for="registerEmailMain">Email:</label>
+            <input
+              type="email"
+              id="registerEmailMain"
+              name="registerEmailMain"
+              required
+            />
+          </div>
+          <div class="auth-field">
+            <label for="registerPasswordMain">Password:</label>
+            <input
+              type="password"
+              id="registerPasswordMain"
+              name="registerPasswordMain"
+              required
+            />
+          </div>
+          <div class="auth-actions">
+            <button type="submit" id="btnRegisterMain">Registrarme</button>
+            <button type="button" id="btnRegisterCancel">Cancelar</button>
+          </div>
+        </form>
+        <form id="forgotForm" class="forgot-form hidden" autocomplete="on">
+          <div class="auth-field">
+            <label for="forgotEmailMain">Email:</label>
+            <input
+              type="email"
+              id="forgotEmailMain"
+              name="forgotEmailMain"
+              required
+            />
+          </div>
+          <div class="auth-actions">
+            <button type="submit" id="btnForgotMain">
+              Enviar recuperacion
+            </button>
+            <button type="button" id="btnForgotCancel">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+      <div class="mock-top-actions">
+        <button
+          class="add-space-btn add-space-btn-secondary"
+          type="button"
+          onclick="toggleForm()"
+        >
+          Expandir/Comprimir Formulario
+        </button>
+        <button class="add-space-btn" id="btnToggleSpaceForm" type="button">
+          <span class="plus">+</span>
+          <span>Agregar espacio</span>
+        </button>
+      </div>
+
+      <div class="space-form-container hidden" id="spaceFormContainer">
+        <h4>Gestion del Espacio (Nuevo)</h4>
+        <form id="spaceForm" class="owner-space-form">
+          <div class="owner-space-field">
+            <label>Email owner (sesion):</label>
+            <input type="email" id="ownerEmail" name="ownerEmail" readonly />
+          </div>
+          <div class="owner-space-field">
+            <label>Nombre espacio:<span class="required"> </span></label>
+            <input type="text" id="spaceName" name="spaceName" />
+          </div>
+          <div class="owner-space-field">
+            <label>Nombre owner (sesion):</label>
+            <input type="text" id="ownerName" name="ownerName" readonly />
+          </div>
+          <div class="owner-space-field">
+            <label>Tipo espacio:<span class="required"> </span></label>
+            <select id="spaceType" name="spaceType">
+              <option value="publico">Publico</option>
+              <option value="privado">Privado</option>
+            </select>
+          </div>
+          <div class="space-form-actions">
+            <button type="submit">Crear</button>
+            <button type="button" id="btnCancelSpaceForm">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="form-container">
+        <form id="myForm">
+          <div class="form-group space-action-row">
+            <label class="required">Espacio:</label>
+            <div class="space-action-grid">
+              <select id="categoria" name="categoria"></select>
+              <div class="space-action-side">
+                <span class="space-action-label">Acción Pendiente:</span>
+                <div class="status-inline" id="spaceSelectionAction">-</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="required">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" />
+          </div>
+          <div class="form-group">
+            <label>Comentario:</label>
+            <input type="text" id="comentario" name="comentario" />
+          </div>
+          <div class="form-group">
+            <label class="required">Direccion:</label>
+            <input type="text" id="direccion" name="direccion" />
+          </div>
+        </form>
+      </div>
+
+      <div class="button-container">
+        <button id="btnAgregar" onclick="crear()">Agregar</button>
+        <button id="btnModificar" onclick="modificar()">Modificar</button>
+        <button id="btnBorrar" onclick="borrar()">Borrar</button>
+        <button id="btnBuscar" onclick="buscar()">Buscar</button>
+        <button id="btnLimpiar" onclick="limpiar()">Limpiar</button>
+        <button id="btnHtml" onclick="publicar()">Html</button>
+        <button id="btnManual" onclick="info()">Manual</button>
+        <button id="btnEspacio" onclick="docs()">Edit Espacio</button>
+        <button id="btnLog" onclick="log()">Log</button>
+      </div>
+
+      <section class="owner-space-panel hidden" id="ownerSpacePanel">
+        <h4>Gestion del Espacio (Owner)</h4>
+        <div class="owner-space-form" id="ownerSpaceForm">
+          <div class="owner-space-field">
+            <label>Email owner:</label>
+            <input type="email" id="ownerPanelEmail" readonly />
+          </div>
+          <div class="owner-space-field">
+            <label>Nombre owner:</label>
+            <input type="text" id="ownerPanelName" readonly />
+          </div>
+          <div class="owner-space-field">
+            <label>Espacio:</label>
+            <input type="text" id="ownerPanelSpaceName" />
+          </div>
+          <div class="owner-space-field">
+            <label>Tipo:</label>
+            <select id="ownerPanelSpaceType">
+              <option value="publico">publico</option>
+              <option value="privado">privado</option>
+            </select>
+          </div>
+          <div class="owner-panel-actions">
+            <button type="button" id="ownerPanelSaveBtn">Modificar</button>
+            <button type="button" id="ownerPanelCancelBtn">Cancelar</button>
+          </div>
+        </div>
+        <div class="owner-users-table-wrap">
+          <table id="ownerUsersTable">
+            <thead>
+              <tr>
+                <th>Usuario autorizado</th>
+                <th>Estado</th>
+                <th>Accion</th>
+              </tr>
+            </thead>
+            <tbody id="ownerUsersTableBody"></tbody>
+          </table>
+        </div>
+        <div class="owner-private-message hidden" id="ownerPrivateMessage">
+          Espacio privado: sin gestion de autorizaciones visible.
+        </div>
+      </section>
+
+      <div class="table-container">
+        <h4 id="selectedSpaceTableTitle" class="selected-space-title">
+          Espacio seleccionado: -
+        </h4>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Agregado por</th>
+                <th>Nombre</th>
+                <th>Comentario</th>
+                <th>Dirección</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Los datos de los links se insertarán aquí -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Socket.IO debe cargarse antes del script principal -->
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
