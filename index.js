@@ -45,6 +45,7 @@ const mockState = {
 const ACCESS_TOKEN_KEY = 'accessToken';
 const AUTO_REFRESH_INTERVAL_MS = 8000;
 const API_BASE_URL = 'https://backendutn-tpf.onrender.com';
+const FRONTEND_BUILD_VERSION = '2026-07-17-logs-auth-header';
 const authSession = {
     user: null
 };
@@ -1399,6 +1400,7 @@ function updateTable() {
 
 // Actualizar la tabla cuando la página se cargue
 function inicializarEventos() {
+    console.info(`Frontend build: ${FRONTEND_BUILD_VERSION}`);
     setupAuthPanel();
 
     const token = getToken();
