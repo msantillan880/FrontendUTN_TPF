@@ -1933,9 +1933,37 @@ async function publicar() {
     }
 }
 
-function info() {
-    // Función para mostrar información
-    window.open('ExplicacionTPF.pdf', "_blank");
+async function info() {
+    const token = getToken();
+    if (!token) {
+        alert('Debe iniciar sesion para abrir el manual.');
+        return;
+    }
+
+    try {
+        const response = await fetch(resolveApiUrl('/api/leePdf'), {
+            method: 'POST',
+            headers: getAuthHeaders()
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || !payload?.ok) {
+            const message = payload?.message || payload?.error || `No se pudo abrir el manual (HTTP ${response.status})`;
+            alert(message);
+            return;
+        }
+
+        const manualUrl = String(payload?.data?.url || '').trim();
+        if (!manualUrl) {
+            alert('No se recibio URL del manual.');
+            return;
+        }
+
+        window.open(manualUrl, '_blank');
+    } catch (error) {
+        console.error('Error abriendo manual:', error);
+        alert('Error conectando con el servidor');
+    }
 }
 
 function docs() {
