@@ -1934,16 +1934,9 @@ async function publicar() {
 }
 
 async function info() {
-    const token = getToken();
-    if (!token) {
-        alert('Debe iniciar sesion para abrir el manual.');
-        return;
-    }
-
     try {
         const response = await fetch(resolveApiUrl('/api/leePdf'), {
-            method: 'POST',
-            headers: getAuthHeaders()
+            method: 'POST'
         });
 
         const payload = await response.json().catch(() => ({}));
