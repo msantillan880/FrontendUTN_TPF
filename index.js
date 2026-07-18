@@ -1956,7 +1956,24 @@ async function info() {
             return;
         }
 
-        window.open(manualUrl, '_blank');
+        const pdfResponse = await fetch(manualUrl, {
+            method: 'GET',
+            headers
+        });
+
+        if (!pdfResponse.ok) {
+            const message = `No se pudo abrir el PDF (HTTP ${pdfResponse.status})`;
+            alert(message);
+            return;
+        }
+
+        const blob = await pdfResponse.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const tab = window.open(blobUrl, '_blank');
+        if (!tab) {
+            alert('El navegador bloqueo la apertura de la pestaña. Permita pop-ups para este sitio.');
+        }
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 60000);
     } catch (error) {
         console.error('Error abriendo manual:', error);
         alert('Error conectando con el servidor');
