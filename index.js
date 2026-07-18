@@ -1935,8 +1935,12 @@ async function publicar() {
 
 async function info() {
     try {
+        const token = getToken();
+        const headers = token ? getAuthHeaders() : {};
+
         const response = await fetch(resolveApiUrl('/api/leePdf'), {
-            method: 'POST'
+            method: 'POST',
+            headers
         });
 
         const payload = await response.json().catch(() => ({}));
